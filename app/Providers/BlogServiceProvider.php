@@ -29,6 +29,29 @@ class BlogServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        $this->registerMenuItems();
+    }
+
+    /**
+     * Register menu items for the Blog module.
+     */
+    protected function registerMenuItems(): void
+    {
+        $this->app->booted(function () {
+            \App\Services\MenuService::addMenuItem(
+                menu: 'primary',
+                id: 'blog',
+                title: __('Blog'),
+                url: '/dashboard/blog',
+                icon: 'FileText',
+                order: 70,
+                permissions: 'posts.view_any',
+                route: 'blog.*'
+            );
+
+            \App\Services\MenuService::addSubmenuItem('primary', 'blog', __('All Posts'), '/dashboard/blog', 10, 'posts.view_any', 'blog.index', 'List');
+            \App\Services\MenuService::addSubmenuItem('primary', 'blog', __('Create Post'), '/dashboard/blog/create', 20, 'posts.create', 'blog.create', 'Plus');
+        });
     }
 
     /**
