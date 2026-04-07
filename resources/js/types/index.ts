@@ -4,6 +4,7 @@ export interface Banner {
     id: number;
     uuid: string;
     name: string;
+    description: string | null;
     image_url: string[] | null;
     is_active: boolean;
     start_at: string | null;
@@ -14,6 +15,7 @@ export interface Banner {
 
 export interface BannerFormData {
     name: string;
+    description: string;
     image_url: string[];
     is_active: boolean;
     start_at: string;

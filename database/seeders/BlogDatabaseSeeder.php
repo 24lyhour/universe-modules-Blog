@@ -15,7 +15,10 @@ class BlogDatabaseSeeder extends Seeder
 
 
             // special Offer home page view
-            SpecialOfferSeeder::class
+            SpecialOfferSeeder::class,
+
+            // slider 
+            SliderShowSeeder::class,
 
         ]);
     }

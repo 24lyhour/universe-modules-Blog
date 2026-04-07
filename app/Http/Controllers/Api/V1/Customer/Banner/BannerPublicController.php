@@ -7,13 +7,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Blog\Http\Resources\Api\V1\BannerResource;
 use Modules\Blog\Models\Banner;
-use Modules\Blog\Services\BannerService;
 
 class BannerPublicController extends Controller
 {
-    public function __construct(
-        protected BannerService $bannerService
-    ) {}
 
     /**
      * List active banners (for mobile/frontend).

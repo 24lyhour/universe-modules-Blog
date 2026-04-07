@@ -21,6 +21,7 @@ const isOpen = computed({
 
 const form = useForm<BannerFormData>({
     name: props.banner.name,
+    description: props.banner.description || '',
     image_url: props.banner.image_url || [],
     is_active: props.banner.is_active,
     start_at: props.banner.start_at ? props.banner.start_at.slice(0, 16) : '',
@@ -34,6 +35,7 @@ const { validateAndSubmit, createIsFormInvalid } = useFormValidation(
 
 const getFormData = () => ({
     name: form.name,
+    description: form.description,
     image_url: form.image_url,
     is_active: form.is_active,
     start_at: form.start_at,

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('image_url');
             $table->boolean('is_active')->default(true);
             $table->timestamp('start_at')->nullable();
-            $table->string('description', 200);
+            $table->string('description', 200)->nullable();
             $table->timestamp('end_at')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();

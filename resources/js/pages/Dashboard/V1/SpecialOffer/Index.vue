@@ -33,7 +33,6 @@ const columns = [
     { key: 'preview', label: 'Preview', sortable: false },
     { key: 'title', label: 'Title', sortable: true },
     { key: 'subtitle', label: 'Subtitle', sortable: false },
-    { key: 'sort_order', label: 'Order', sortable: true },
     { key: 'is_active', label: 'Status', sortable: true },
     { key: 'actions', label: '', sortable: false },
 ];
@@ -178,11 +177,7 @@ const handleDelete = () => {
             <template #cell-subtitle="{ item }">
                 <span class="text-sm text-muted-foreground">{{ item.subtitle || '-' }}</span>
             </template>
-
-            <template #cell-sort_order="{ item }">
-                <span class="text-sm">{{ item.sort_order }}</span>
-            </template>
-
+            
             <template #cell-is_active="{ item }">
                 <div class="flex items-center gap-2" @click.stop>
                     <Switch
