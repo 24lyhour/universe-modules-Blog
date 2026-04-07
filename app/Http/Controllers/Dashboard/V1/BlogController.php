@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Blog\Http\Controllers;
+namespace Modules\Blog\Http\Controllers\Dashboard\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;

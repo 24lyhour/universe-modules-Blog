@@ -1,0 +1,25 @@
+<?php
+
+namespace Modules\Blog\Http\Requests\Dashboard\V1\BannerRequest;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateBannerRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return auth()->check();
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'image_url' => ['sometimes', 'required', 'array', 'min:1'],
+            'image_url.*' => ['required', 'string', 'url'],
+            'is_active' => ['boolean'],
+            'start_at' => ['nullable', 'date'],
+            'end_at' => ['nullable', 'date', 'after_or_equal:start_at'],
+        ];
+    }
+}

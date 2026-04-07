@@ -2,6 +2,7 @@
 
 namespace Modules\Blog\Providers;
 
+use App\Services\MenuService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Blog\Contracts\PostRepositoryInterface;
@@ -38,19 +39,77 @@ class BlogServiceProvider extends ServiceProvider
     protected function registerMenuItems(): void
     {
         $this->app->booted(function () {
-            \App\Services\MenuService::addMenuItem(
-                menu: 'primary',
-                id: 'blog',
-                title: __('Blog'),
-                url: '/dashboard/blog',
-                icon: 'FileText',
-                order: 70,
-                permissions: 'posts.view_any',
-                route: 'blog.*'
+            // Main menu item
+            MenuService::addMenuItem(
+                'primary',
+                'blog',
+                __('Blog'),
+                '/dashboard/blog',
+                'FileText',
+                70,
+                'posts.view_any',
+                'blog.*'
             );
 
-            \App\Services\MenuService::addSubmenuItem('primary', 'blog', __('All Posts'), '/dashboard/blog', 10, 'posts.view_any', 'blog.index', 'List');
-            \App\Services\MenuService::addSubmenuItem('primary', 'blog', __('Create Post'), '/dashboard/blog/create', 20, 'posts.create', 'blog.create', 'Plus');
+            // All Posts submenu
+            MenuService::addSubmenuItem(
+                'primary',
+                'blog',
+                __('All Posts'),
+                '/dashboard/blog',
+                10,
+                'posts.view_any',
+                'blog.index',
+                'List'
+            );
+
+            // Create Post submenu
+            MenuService::addSubmenuItem(
+                'primary',
+                'blog',
+                __('Create Post'),
+                '/dashboard/blog/create',
+                20,
+                'posts.create',
+                'blog.create',
+                'Plus'
+            );
+
+            // Banners submenu
+            MenuService::addSubmenuItem(
+                'primary',
+                'blog',
+                __('Banners'),
+                route('blog.banners.index'),
+                30,
+                'banners.view_any',
+                'blog.banners.*',
+                'Image'
+            );
+
+            // Special Offers submenu
+            MenuService::addSubmenuItem(
+                'primary',
+                'blog',
+                __('Special Offers'),
+                route('blog.special-offers.index'),
+                40,
+                'special_offers.view_any',
+                'blog.special-offers.*',
+                'Tag'
+            );
+
+            // Slider Shows submenu
+            MenuService::addSubmenuItem(
+                'primary',
+                'blog',
+                __('Slider Shows'),
+                route('blog.slider-shows.index'),
+                50,
+                'slider_shows.view_any',
+                'blog.slider-shows.*',
+                'PanelTop'
+            );
         });
     }
 

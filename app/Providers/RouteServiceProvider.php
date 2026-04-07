@@ -4,6 +4,8 @@ namespace Modules\Blog\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Modules\Blog\Models\SliderShow;
+use Modules\Blog\Models\SpacialOffer;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Route::model('specialOffer', SpacialOffer::class);
+        Route::model('sliderShow', SliderShow::class);
+
         parent::boot();
     }
 
@@ -26,6 +31,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
         $this->mapWebRoutes();
+        $this->mapDashboardRoutes();
     }
 
     /**
@@ -46,5 +52,13 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes(): void
     {
         Route::middleware('api')->prefix('api')->name('api.')->group(module_path($this->name, '/routes/api.php'));
+    }
+
+    /**
+     * Define the "dashboard" routes for the application.
+     */
+    protected function mapDashboardRoutes(): void
+    {
+        Route::middleware('web')->group(module_path($this->name, '/routes/dashboard.php'));
     }
 }
