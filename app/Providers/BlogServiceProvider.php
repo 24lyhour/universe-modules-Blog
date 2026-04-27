@@ -2,10 +2,11 @@
 
 namespace Modules\Blog\Providers;
 
-use App\Services\MenuService;
+use Illuminate\Contracts\Http\Kernel as HttpKernel;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Blog\Contracts\PostRepositoryInterface;
+use Modules\Blog\Http\Middleware\DashboardMiddlewareHandle;
 use Modules\Blog\Repositories\PostRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -30,87 +31,17 @@ class BlogServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
-        $this->registerMenuItems();
+        $this->registerDashboardMiddleware();
     }
 
     /**
-     * Register menu items for the Blog module.
+     * Sidebar entries live in DashboardMiddlewareHandle.
      */
-    protected function registerMenuItems(): void
+    protected function registerDashboardMiddleware(): void
     {
-        $this->app->booted(function () {
-            // Main menu item
-            MenuService::addMenuItem(
-                'primary',
-                'blog',
-                __('Blog'),
-                '/dashboard/blog',
-                'FileText',
-                70,
-                'posts.view_any',
-                'blog.*'
-            );
-
-            // All Posts submenu
-            MenuService::addSubmenuItem(
-                'primary',
-                'blog',
-                __('All Posts'),
-                '/dashboard/blog',
-                10,
-                'posts.view_any',
-                'blog.index',
-                'List'
-            );
-
-            // Create Post submenu
-            MenuService::addSubmenuItem(
-                'primary',
-                'blog',
-                __('Create Post'),
-                '/dashboard/blog/create',
-                20,
-                'posts.create',
-                'blog.create',
-                'Plus'
-            );
-
-            // Banners submenu
-            MenuService::addSubmenuItem(
-                'primary',
-                'blog',
-                __('Banners'),
-                route('blog.banners.index'),
-                30,
-                'banners.view_any',
-                'blog.banners.*',
-                'Image'
-            );
-
-            // Special Offers submenu
-            MenuService::addSubmenuItem(
-                'primary',
-                'blog',
-                __('Special Offers'),
-                route('blog.special-offers.index'),
-                40,
-                'special_offers.view_any',
-                'blog.special-offers.*',
-                'Tag'
-            );
-
-            // Slider Shows submenu
-            MenuService::addSubmenuItem(
-                'primary',
-                'blog',
-                __('Slider Shows'),
-                route('blog.slider-shows.index'),
-                50,
-                'slider_shows.view_any',
-                'blog.slider-shows.*',
-                'PanelTop'
-            );
-        });
+        /** @var \Illuminate\Foundation\Http\Kernel $kernel */
+        $kernel = $this->app->make(HttpKernel::class);
+        $kernel->prependMiddlewareToGroup('web', DashboardMiddlewareHandle::class);
     }
 
     /**
